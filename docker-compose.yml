@@ -1,0 +1,21 @@
+services:
+  angular:
+    build: ./frontend
+    ports:
+      - "4200:80" 
+    depends_on:
+      - go-backend
+    networks:
+      - pi-network
+
+  go-backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    networks:
+      - pi-network
+
+networks:
+  pi-network:
+    driver: bridge
+

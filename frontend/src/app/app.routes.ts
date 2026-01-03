@@ -12,5 +12,5 @@ export const routes: Routes = [{
       path: '**',
       redirectTo: '/app/home'
     }
-  ]
-}];
+  ],
+}, { path: '**', redirectTo: 'app/home' }];
