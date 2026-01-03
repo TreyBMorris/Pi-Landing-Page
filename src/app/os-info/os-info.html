@@ -1,0 +1,13 @@
+<div class="card">
+  <h2>Raspberry PI OS Information</h2>
+  <ul>
+    <li><strong>Platform:</strong> {{ osInfo.platform }}</li>
+    <li><strong>CPU Cores:</strong> {{ osInfo.cpuCores }}</li>
+    <li><strong>Memory:</strong> {{ osInfo.memoryGB }}</li>
+  </ul>
+
+  <details>
+    <summary>User Agent</summary>
+    <pre>{{ osInfo.userAgent }}</pre>
+  </details>
+</div>

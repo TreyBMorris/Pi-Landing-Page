@@ -1,9 +1,8 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-
+import { OsInfo } from './os-info/os-info'
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [OsInfo],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
