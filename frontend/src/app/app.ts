@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
-import { OsInfo } from './os-info/os-info'
+import { OsDashboard } from './os-dashboard/os-dashboard';
 @Component({
   selector: 'app-root',
-  imports: [OsInfo],
+  imports: [OsDashboard],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

@@ -21,10 +21,17 @@ type Metrics struct {
 	CPULogical  int     `json:"cpu_logical"`
 	MemoryUsed  float64 `json:"memory_used_percent"`
 	DiskUsed    float64 `json:"disk_used_percent"`
-	GoRoutines  int     `json:"goroutines"`
+}
+
+// Probably Temp, just want to get it working
+func setCORS(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 }
 
 func health(w http.ResponseWriter, _ *http.Request) {
+	setCORS(w)
 	json.NewEncoder(w).Encode(Health{
 		Status:    "ok",
 		Timestamp: time.Now(),
@@ -32,6 +39,7 @@ func health(w http.ResponseWriter, _ *http.Request) {
 }
 
 func metrics(w http.ResponseWriter, _ *http.Request) {
+	setCORS(w)
 	cpuPhysical, err := cpu.Counts(false)
 	cpuLogical, _ := cpu.Counts(true)
 	if err != nil {
@@ -45,7 +53,6 @@ func metrics(w http.ResponseWriter, _ *http.Request) {
 		CPULogical:  cpuLogical,
 		MemoryUsed:  memS.UsedPercent,
 		DiskUsed:    diskS.UsedPercent,
-		GoRoutines:  runtime.NumGoroutine(),
 	})
 }
 

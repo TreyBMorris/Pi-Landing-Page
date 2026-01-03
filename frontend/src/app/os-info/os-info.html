@@ -2,31 +2,28 @@
   <h2>System Dashboard</h2>
 
   <div class="status">
-    <span class="badge running">● {{ status.app }}</span>
-    <span
-      class="badge"
-      [class.online]="status.online"
-      [class.offline]="!status.online"
-    >
-      {{ status.online ? 'ONLINE' : 'OFFLINE' }}
-    </span>
+    <span class="badge running">● {{ health.status }}</span>
     <span class="timestamp">
-      Updated: {{ status.lastUpdated | date:'mediumTime' }}
+      Updated: {{ health.timestamp | date:'mediumTime' }}
     </span>
   </div>
 
   <hr />
 
-  <h3>Client OS Information</h3>
+  <h3>Client Information</h3>
   <ul>
     <li><strong>Platform:</strong> {{ osInfo.platform }}</li>
-    <li><strong>CPU Cores:</strong> {{ osInfo.cpuCores }}</li>
-    <li><strong>Memory:</strong> {{ osInfo.memoryGB }}</li>
+    <li><strong>User Agent:</strong>{{osInfo.userAgent}}</li>
   </ul>
 
-  <details>
-    <summary>User Agent</summary>
-    <pre>{{ osInfo.userAgent }}</pre>
-  </details>
+  <h3>Server Metrics</h3>
+  @if(metrics){
+  <ul>
+    <li><strong>CPU Phyiscal:</strong> {{ metrics.cpu_count }}</li>
+    <li><strong>CPU Logical:</strong>{{metrics.cpu_logical}}</li>
+    <li><strong>Memory Used:</strong>{{metrics.memory_used_percent}}</li>
+    <li><<strong>Disk Used:</strong>{{metrics.disk_used_percent}}</li>
+  </ul>
+  }
 </div>
 

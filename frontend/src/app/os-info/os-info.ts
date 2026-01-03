@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { HealthStatus, Metrics, MetricsService } from '../services/metricsservice';
 
 @Component({
   selector: 'tbm-pi-os-info',
@@ -9,37 +10,40 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OsInfo implements OnInit {
 
+  protected readonly metricsService = inject(MetricsService);
+
   osInfo = {
     platform: '',
     userAgent: '',
-    cpuCores: 0,
-    memoryGB: 'Unknown'
   };
 
-  status = {
-    app: 'RUNNING',
-    online: navigator.onLine,
-    lastUpdated: new Date(),
-  };
+  health: HealthStatus = { status: "UNKNOWN", timestamp: '' };
+  metrics: Metrics | null = null;
 
 
 
   ngOnInit(): void {
     this.osInfo.platform = navigator.platform;
     this.osInfo.userAgent = navigator.userAgent;
-    this.osInfo.cpuCores = navigator.hardwareConcurrency || 0;
-    this.osInfo.memoryGB =
-      (navigator as any).deviceMemory
-        ? `${(navigator as any).deviceMemory} GB`
-        : 'Not supported';
 
-    window.addEventListener('online', () => this.updateStatus());
-    window.addEventListener('offline', () => this.updateStatus());
+    this.fetchHealth();
+    this.fetchMetrics();
+
+    console.log(this.health);
   }
 
 
-  updateStatus(): void {
-    this.status.online = navigator.onLine;
-    this.status.lastUpdated = new Date();
+  fetchHealth(): void {
+    this.metricsService.getHealth().subscribe({
+      next: (data) => this.health = data,
+      error: () => this.health.status = 'DOWN'
+    });
+  }
+
+  fetchMetrics(): void {
+    this.metricsService.getMetrics().subscribe({
+      next: (data) => this.metrics = data,
+      error: () => this.metrics = null
+    });
   }
 }
