@@ -27,7 +27,7 @@ export class MetricsService {
 
 
   private healthUrl = `${BASE_URL}/api/health`;
-  private metricsUrl = `${BASE_URL} /api/metrics`;
+  private metricsUrl = `${BASE_URL}/api/metrics`;
 
 
   getHealth(): Observable<HealthStatus> {

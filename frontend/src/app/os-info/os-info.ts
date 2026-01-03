@@ -1,12 +1,14 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { HealthStatus, Metrics, MetricsService } from '../services/metricsservice';
+import { Spinner } from '../spinner/spinner';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'tbm-pi-os-info',
-  imports: [DatePipe],
+  imports: [DatePipe, DecimalPipe, Spinner],
   templateUrl: './os-info.html',
-  styleUrl: './os-info.scss',
+  styleUrls: ['./os-info.scss'],
 })
 export class OsInfo implements OnInit {
 
@@ -19,6 +21,7 @@ export class OsInfo implements OnInit {
 
   health: HealthStatus = { status: "UNKNOWN", timestamp: '' };
   metrics: Metrics | null = null;
+  loading = signal<boolean>(true);
 
 
 
@@ -26,24 +29,23 @@ export class OsInfo implements OnInit {
     this.osInfo.platform = navigator.platform;
     this.osInfo.userAgent = navigator.userAgent;
 
-    this.fetchHealth();
-    this.fetchMetrics();
-
-    console.log(this.health);
-  }
-
-
-  fetchHealth(): void {
-    this.metricsService.getHealth().subscribe({
-      next: (data) => this.health = data,
-      error: () => this.health.status = 'DOWN'
-    });
-  }
-
-  fetchMetrics(): void {
-    this.metricsService.getMetrics().subscribe({
-      next: (data) => this.metrics = data,
-      error: () => this.metrics = null
+    forkJoin({
+      health: this.metricsService.getHealth(),
+      metrics: this.metricsService.getMetrics()
+    }).subscribe({
+      next: ({ health, metrics }) => {
+        this.health = {
+          ...health,
+          status: health.status.toUpperCase()
+        };
+        this.metrics = metrics;
+        this.loading.set(false);
+      },
+      error: () => {
+        this.health = { status: 'DOWN', timestamp: new Date().toISOString() };
+        this.metrics = null;
+        this.loading.set(false);
+      }
     });
   }
 }

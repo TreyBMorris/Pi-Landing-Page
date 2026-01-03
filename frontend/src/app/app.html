@@ -1,1 +1,5 @@
-<tbm-pi-os-dashboard></tbm-pi-os-dashboard>
+@defer{
+<router-outlet></router-outlet>
+} @loading (after 100ms; minimum 1s) {
+<tbm-pi-spinner/>
+}

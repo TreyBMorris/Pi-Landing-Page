@@ -1,3 +1,7 @@
+@if(loading()){
+  <tbm-pi-spinner></tbm-pi-spinner>
+}@else{
+
 <div class="card">
   <h2>System Dashboard</h2>
 
@@ -19,11 +23,11 @@
   <h3>Server Metrics</h3>
   @if(metrics){
   <ul>
-    <li><strong>CPU Phyiscal:</strong> {{ metrics.cpu_count }}</li>
+    <li><strong>CPU Physical:</strong> {{ metrics.cpu_count }}</li>
     <li><strong>CPU Logical:</strong>{{metrics.cpu_logical}}</li>
-    <li><strong>Memory Used:</strong>{{metrics.memory_used_percent}}</li>
-    <li><<strong>Disk Used:</strong>{{metrics.disk_used_percent}}</li>
+    <li><strong>Memory Used:</strong>{{ metrics.memory_used_percent | number:'1.1-2' }}%</li>
+    <li><strong>Disk Used:</strong>{{ metrics.disk_used_percent | number:'1.1-2' }}%</li>
   </ul>
   }
 </div>
-
+}

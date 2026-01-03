@@ -30,21 +30,37 @@ func setCORS(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 }
 
-func health(w http.ResponseWriter, _ *http.Request) {
+func health(w http.ResponseWriter, r *http.Request) {
 	setCORS(w)
+
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(Health{
 		Status:    "ok",
 		Timestamp: time.Now(),
 	})
 }
 
-func metrics(w http.ResponseWriter, _ *http.Request) {
+func metrics(w http.ResponseWriter, r *http.Request) {
 	setCORS(w)
+
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
 	cpuPhysical, err := cpu.Counts(false)
 	cpuLogical, _ := cpu.Counts(true)
 	if err != nil {
 		cpuPhysical = runtime.NumCPU()
 	}
+
 	memS, _ := mem.VirtualMemory()
 	diskS, _ := disk.Usage("/")
 

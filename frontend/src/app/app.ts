@@ -1,8 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { OsDashboard } from './os-dashboard/os-dashboard';
+import { RouterOutlet } from '@angular/router';
+import { Spinner } from './spinner/spinner';
 @Component({
   selector: 'app-root',
-  imports: [OsDashboard],
+  imports: [RouterOutlet, Spinner],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
