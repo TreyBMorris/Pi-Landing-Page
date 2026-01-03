@@ -1,28 +1,48 @@
 .card {
-  max-width: 600px;
+  max-width: 650px;
   margin: 2rem auto;
   padding: 1.5rem;
-  border-radius: 8px;
-  background: #1e1e1e;
-  color: #fff;
+  border-radius: 10px;
+  background: #111;
+  color: #eaeaea;
+  font-family: "JetBrainsMono Nerd Font", monospace;
 }
 
-h2 {
+.status {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
+.badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
 }
 
-li {
-  margin-bottom: 0.5rem;
+.running {
+  background: #1f6feb;
 }
 
-details {
-  margin-top: 1rem;
-  cursor: pointer;
+.online {
+  background: #2ea043;
+}
+
+.offline {
+  background: #d73a49;
+}
+
+.timestamp {
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 1rem 0;
 }
 
 pre {

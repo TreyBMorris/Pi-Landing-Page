@@ -1,8 +1,9 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'tbm-pi-os-info',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './os-info.html',
   styleUrl: './os-info.scss',
 })
@@ -15,7 +16,15 @@ export class OsInfo implements OnInit {
     memoryGB: 'Unknown'
   };
 
-  ngOnInit(): void{
+  status = {
+    app: 'RUNNING',
+    online: navigator.onLine,
+    lastUpdated: new Date(),
+  };
+
+
+
+  ngOnInit(): void {
     this.osInfo.platform = navigator.platform;
     this.osInfo.userAgent = navigator.userAgent;
     this.osInfo.cpuCores = navigator.hardwareConcurrency || 0;
@@ -23,5 +32,14 @@ export class OsInfo implements OnInit {
       (navigator as any).deviceMemory
         ? `${(navigator as any).deviceMemory} GB`
         : 'Not supported';
+
+    window.addEventListener('online', () => this.updateStatus());
+    window.addEventListener('offline', () => this.updateStatus());
+  }
+
+
+  updateStatus(): void {
+    this.status.online = navigator.onLine;
+    this.status.lastUpdated = new Date();
   }
 }

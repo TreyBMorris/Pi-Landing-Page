@@ -1,5 +1,23 @@
 <div class="card">
-  <h2>Raspberry PI OS Information</h2>
+  <h2>System Dashboard</h2>
+
+  <div class="status">
+    <span class="badge running">● {{ status.app }}</span>
+    <span
+      class="badge"
+      [class.online]="status.online"
+      [class.offline]="!status.online"
+    >
+      {{ status.online ? 'ONLINE' : 'OFFLINE' }}
+    </span>
+    <span class="timestamp">
+      Updated: {{ status.lastUpdated | date:'mediumTime' }}
+    </span>
+  </div>
+
+  <hr />
+
+  <h3>Client OS Information</h3>
   <ul>
     <li><strong>Platform:</strong> {{ osInfo.platform }}</li>
     <li><strong>CPU Cores:</strong> {{ osInfo.cpuCores }}</li>
@@ -11,3 +29,4 @@
     <pre>{{ osInfo.userAgent }}</pre>
   </details>
 </div>
+
