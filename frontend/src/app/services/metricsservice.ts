@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 /**
-  * Service to call the Health and Metric endpoints
-*/
+ * Service to call the Health and Metric endpoints
+ */
 
-//Constant will be changed later
-export const BASE_URL = 'http://localhost:8080'
+export const BASE_URL = environment.apiUrl;
 export interface HealthStatus {
-  status: string,
-  timestamp: string,
+  status: string;
+  timestamp: string;
 }
 export interface Metrics {
   cpu_logical: number;
@@ -24,11 +24,8 @@ export interface Metrics {
 export class MetricsService {
   protected readonly httpClient = inject(HttpClient);
 
-
-
   private healthUrl = `${BASE_URL}/api/health`;
   private metricsUrl = `${BASE_URL}/api/metrics`;
-
 
   getHealth(): Observable<HealthStatus> {
     return this.httpClient.get<HealthStatus>(this.healthUrl);
