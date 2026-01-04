@@ -1,33 +1,42 @@
-@if(loading()){
-  <tbm-pi-spinner></tbm-pi-spinner>
-}@else{
-
 <div class="card">
-  <h2>System Dashboard</h2>
+  @if (loading()) {
+    <div class="w-full h-full relative">
+      <div class="flex items-center justify-center flex-col h-full">
+        <tbm-pi-spinner />
+      </div>
+    </div>
+  } @else {
+    <h2>System Dashboard</h2>
 
-  <div class="status">
-    <span class="badge running">● {{ health.status }}</span>
-    <span class="timestamp">
-      Updated: {{ health.timestamp | date:'mediumTime' }}
-    </span>
-  </div>
+    <div class="status">
+      <span
+        class="badge running"
+        [ngClass]="{
+          running: health.status === Status.UNKNOWN,
+          offline: health.status === Status.DOWN,
+          online: health.status === Status.OK,
+        }"
+        >● {{ health.status }}</span
+      >
+      <span class="timestamp"> Updated: {{ health.timestamp | date: 'mediumTime' }} </span>
+    </div>
 
-  <hr />
+    <hr />
 
-  <h3>Client Information</h3>
-  <ul>
-    <li><strong>Platform:</strong> {{ osInfo.platform }}</li>
-    <li><strong>User Agent:</strong>{{osInfo.userAgent}}</li>
-  </ul>
+    <h3>Client Information</h3>
+    <ul>
+      <li><strong>Platform:</strong> {{ osInfo.platform }}</li>
+      <li><strong>User Agent:</strong> {{ osInfo.userAgent }}</li>
+    </ul>
 
-  <h3>Server Metrics</h3>
-  @if(metrics){
-  <ul>
-    <li><strong>CPU Physical:</strong> {{ metrics.cpu_count }}</li>
-    <li><strong>CPU Logical:</strong>{{metrics.cpu_logical}}</li>
-    <li><strong>Memory Used:</strong>{{ metrics.memory_used_percent | number:'1.1-2' }}%</li>
-    <li><strong>Disk Used:</strong>{{ metrics.disk_used_percent | number:'1.1-2' }}%</li>
-  </ul>
+    <h3>Server Metrics</h3>
+    @if (metrics) {
+      <ul class="list-disc">
+        <li><strong>CPU Physical:</strong> {{ metrics.cpu_count }}</li>
+        <li><strong>CPU Logical:</strong> {{ metrics.cpu_logical }}</li>
+        <li><strong>Memory Used:</strong> {{ metrics.memory_used_percent | number: '1.1-2' }}%</li>
+        <li><strong>Disk Used:</strong> {{ metrics.disk_used_percent | number: '1.1-2' }}%</li>
+      </ul>
+    }
   }
 </div>
-}
